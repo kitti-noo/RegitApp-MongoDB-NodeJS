@@ -37,7 +37,7 @@ const Navbar = () => {
               (showNav ? "" : "hidden")
             }
           >
-            <Link href="/">
+            {/* <Link href="/">
               <a className="lg:inline-flex lg:w-auto px-3 py-2 rounded hover:bg-blue-800 hover:bg-gray-900">
                 Home
               </a>
@@ -47,7 +47,7 @@ const Navbar = () => {
               <a className="lg:inline-flex lg:w-auto px-3 py-2 rounded hover:bg-blue-800 hover:bg-gray-900">
                 Register Subject
               </a>
-            </Link>
+            </Link> */}
             {/* <Link href="/contact">
               <a className="lg:inline-flex lg:w-auto px-3 py-2 rounded hover:bg-blue-800 hover:bg-gray-900">
                 Contact Us

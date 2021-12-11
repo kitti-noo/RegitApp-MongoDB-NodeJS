@@ -59,7 +59,7 @@ import fetch from "isomorphic-unfetch"
                         scope="col"
                         className="px-8 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider "
                       >
-                        Credit
+                        <a className="pl-10">Credit</a>
                       </th>
                       
                     </tr>
@@ -83,7 +83,7 @@ import fetch from "isomorphic-unfetch"
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10 pl-10">
-                            {item.credit}
+                            <a className="pl-5">{item.credit}</a>
                             </div>
                         </div>
                     </td>
