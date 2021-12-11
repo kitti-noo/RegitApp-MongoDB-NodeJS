@@ -16,7 +16,7 @@ var subjects = [
         "credit": 3,
         "departure": "Computer Engineering",
         "faculty": "Engineering",
-        "registered": 39,
+        "registered": 0,
         "maximum": 40
     },
     {
@@ -339,8 +339,6 @@ router.route('/delete-all')
         );
     })
 
-
-/*------------------------------------------ Client ---------------------------------------------------*/
 //get all subjects in database
 router.route('/subjects')
     .get((req, res) => {
@@ -380,21 +378,6 @@ router.route('/subjects/:id')
         }
     })
 
-    .post((req, res) => {
-        var subject_id = req.params.id;
-        if (isValidSubject(subject_id)) {
-            MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
-                (err, db) => {
-                    if (err) throw err;
-                    var dbo = db.db("registration");
-                    //console.log(subj);
-                    dbo.collection("subjects").insertOne(subj)
-                    res.send(subj) 
-                })
-        }
-    })
-    
-/*----------------------------- Admin ------------------------------------*/
     // delete subject
     .delete((req, res) => {
 
@@ -416,7 +399,61 @@ router.route('/subjects/:id')
         }
     })
 
-/*------------------------------------------------------------------------*/
+
+
+
+/*--------------------------------- Client ---------------------------------------*/
+router.route('/regist')
+    // show registration subject
+    .get((req, res) => {
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
+            (err, db) => {
+                if (err) throw err;
+                var dbo = db.db("registration");
+                dbo.collection("subjects").find({}).toArray((err, subjects) => {
+                    if (err) throw err;
+                    res.send(subjects);
+                    db.close();
+                })
+            }
+        );
+    })
+
+router.route('/regist/:id')
+    // add registration subject
+    .post((req, res) => {
+        var subject_id = req.params.id;
+        if (isValidSubject(subject_id)) {
+            MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
+                (err, db) => {
+                    if (err) throw err;
+                    var dbo = db.db("registration");
+                    //console.log(subj);
+                    dbo.collection("subjects").insertOne(subj)
+                    res.send(subj)
+                })
+        }
+    })
+    // remove subject
+    .delete((req, res) => {
+
+        var subject_id = req.params.id;
+        if (isValidSubject(subject_id)) {
+            MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
+                (err, db) => {
+                    if (err) throw err;
+                    var dbo = db.db("registration");
+                    dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
+                        if (err) throw err;
+                        dbo.collection('subjects').deleteOne(subject);
+                        res.send("Delete this subject");
+                    });
+                }
+            );
+        } else {
+            res.status(404).send("Cannot find this course.");
+        }
+    })
 
 
 
