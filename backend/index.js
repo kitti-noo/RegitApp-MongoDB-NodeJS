@@ -358,6 +358,7 @@ router.route('/subjects')
     })
 
 //to get subject by id
+var subj
 router.route('/subjects/:id')
     .get((req, res) => {
         var subject_id = req.params.id;
@@ -369,6 +370,7 @@ router.route('/subjects/:id')
                     dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
                         if (err) throw err;
                         res.json(subject);
+                        subj = subject
                         db.close();
                     });
                 }
@@ -378,8 +380,22 @@ router.route('/subjects/:id')
         }
     })
 
+    .post((req, res) => {
+        var subject_id = req.params.id;
+        if (isValidSubject(subject_id)) {
+            MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
+                (err, db) => {
+                    if (err) throw err;
+                    var dbo = db.db("registration");
+                    //console.log(subj);
+                    dbo.collection("subjects").insertOne(subj)
+                    res.send(subj) 
+                })
+        }
+    })
+    
 /*----------------------------- Admin ------------------------------------*/
-// delete subject
+    // delete subject
     .delete((req, res) => {
 
         var subject_id = req.params.id;
