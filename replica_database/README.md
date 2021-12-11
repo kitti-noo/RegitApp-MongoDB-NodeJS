@@ -26,7 +26,7 @@
 - mongo --host db_replica/localhost:27018,localhost:27019,localhost:27020
 
 -----------------------------------------------------------------------------
-
+- link : "mongodb://localhost:27018,localhost:27019,localhost:27020?replicaSet=db_replica"
 - create database "course" and collection "subject"
 - use course
 - db.getCollection('subjects').find({})
