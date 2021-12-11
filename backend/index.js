@@ -389,8 +389,13 @@ router.route('/subjects/:id')
                     var dbo = db.db("course");
                     dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
                         if (err) throw err;
-                        dbo.collection('subjects').deleteOne(subject);
-                        res.send("Delete this subject");
+                        if (subject == null) {
+                            res.send("It is null")
+                        }
+                        else {
+                            dbo.collection('subjects').deleteOne(subject);
+                            res.send("Delete this subject");
+                        }
                     });
                 }
             );
@@ -457,13 +462,11 @@ router.route('/regist/:id')
                     var dbo = db.db("registration");
                     dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
                         if (err) throw err;
-                        if (err) throw err;
                         //console.log(subject);
                         if (subject == null) {
-                            res.send("It is deleted")
+                            res.send("It is null")
                         }
                         else {
-
                             dbo.collection('subjects').deleteOne(subject);
                             res.send("Delete this subject");
                         }
