@@ -1,54 +1,113 @@
- const Table = () => {
-     return(
-        <div className="flex flex-col p-10">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Subject
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Credit
-                    </th>
-                    
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                <tr >
+import axios from "axios";
+import useSWR, { mutate } from "swr";
+import { useState } from "react";
+// import { ToastContainer, toast, Zoom, Bounce } from 'react-toastify';
+
+
+ const URL = `http://localhost/api/regist/`
+ const fetcher = url => axios.get(url).then(res => res.data);
+
+ export default function Table () {
+   const {data} = useSWR(URL,fetcher);
+   const [subjects , setSubjects] = useState({})
+   const [subject, setSubject] = useState({})
+   const [subid , setId] = useState('')
+   const [subjectname, setSubjectname] = useState('')
+   const [credit, setCredit ] = useState(0);
+   
+   if(!data){
+      console.log(data);
+      return <div ><h1>Loading...</h1></div>
+   }
+   const getSubjects = async() =>{
+     let result = await axios.get(`${URL}`);
+     mutate(URL)
+   }
+   const deleteSubject = async (id) => {
+    let answer = window.confirm("Do you want to delete it?")
+    if (answer === true) {
+      let result = await axios.delete(`${URL}/${id}`)//, {subjectID,subjectName,credit,departure,faculty,registered,maximum }
+      
+    }
+    
+      mutate(URL)
+   }
+      
+   
+    
+   const printSubjects = (subject) =>{
+     console.log(subject);
+     if(subject && subject.length){
+        return(subject.map((item,index)=>(
+            <table key={index}   className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Subject-ID
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Subject
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Credit
+                      </th>
+                      
+                    </tr>
+              </thead>
+              <tbody>
+              <tr >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
-                            Internet
+                            {item.subjectID}
                             </div>
                         </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
-                            3
+                            {item.subjectName}
+                            </div>
+                        </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                            <div className="flex-shrink-0 h-10 w-10">
+                            {item.credit}
                             </div>
                         </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap ">
-                        <button className='bg-red-400 text-red-50 rounded-lg flex-shrink-0 h-10 w-10' onClick={()=>{alert("Are you Delete?")}}>ลบ</button>
+                        <button className='bg-red-400 text-red-50 rounded-lg flex-shrink-0 h-10 w-10' onClick={() => deleteSubject(item.subjectID)}>withdraw</button>
                     </td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-     )
- }
+              </tbody>
+            </table>
+          )
+        ))
+     }
+   }
+   return(
+    <div className="flex flex-col p-10">
+    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
- export default Table;
+        {printSubjects(data)}
+
+         </div>
+           </div>
+         </div>
+      </div>
+   )
+
+}
