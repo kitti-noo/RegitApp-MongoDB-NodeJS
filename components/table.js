@@ -1,10 +1,11 @@
 import axios from "axios";
 import useSWR, { mutate } from "swr";
 import { useState } from "react";
+import fetch from "isomorphic-unfetch"
 // import { ToastContainer, toast, Zoom, Bounce } from 'react-toastify';
 
 
- const URL = `http://localhost/api/regist/`
+ const URL = `http://localhost/api/regist`
  const fetcher = url => axios.get(url).then(res => res.data);
 
  export default function Table () {
@@ -26,7 +27,7 @@ import { useState } from "react";
    const deleteSubject = async (id) => {
     let answer = window.confirm("Do you want to delete it?")
     if (answer === true) {
-      let result = await axios.delete(`${URL}/${id}`)//, {subjectID,subjectName,credit,departure,faculty,registered,maximum }
+      let result = await axios.delete(`${URL}/${id}`)//
       
     }
     
@@ -56,7 +57,7 @@ import { useState } from "react";
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-8 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider "
                       >
                         Credit
                       </th>
@@ -74,20 +75,20 @@ import { useState } from "react";
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10">
+                            <div className="flex-shrink-0 h-10 w-20">
                             {item.subjectName}
                             </div>
                         </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10">
+                            <div className="flex-shrink-0 h-10 w-10 pl-10">
                             {item.credit}
                             </div>
                         </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap ">
-                        <button className='bg-red-400 text-red-50 rounded-lg flex-shrink-0 h-10 w-10' onClick={() => deleteSubject(item.subjectID)}>withdraw</button>
+                        <button className='bg-red-400 text-red-50 rounded-lg flex-shrink-0 h-10 w-90 p-2' onClick={() => deleteSubject(item.subjectID)}>withdraw</button>
                     </td>
                 </tr>
               </tbody>

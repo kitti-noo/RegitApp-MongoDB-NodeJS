@@ -427,7 +427,19 @@ router.route('/regist')
 router.route('/regist/:id')
     // add registration subject
     .post((req, res) => {
+        
         var subject_id = req.params.id;
+
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
+            (err, db) => {
+                if (err) throw err;
+                var dbo = db.db("course");
+                dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
+                    if (err) throw err;
+                    subj = subject
+                });
+            }
+        );
         if (isValidSubject(subject_id)) {
             MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true },
                 (err, db) => {

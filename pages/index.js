@@ -24,8 +24,8 @@ export default function Home() {
         <Search/>
       </div>
       <div div className='bg-gray-100 rounded-lg shadow-2xl w-3/4 '>
-        <button className='bg-green-400 text-green-50 rounded-lg py-2 px-4 mt-5 float-right '>Add</button>
-        <button className='bg-blue-400 text-blue-50 rounded-lg py-2 px-4 mt-5 float-right'>Info</button>
+        {/* <button className='bg-green-400 text-green-50 rounded-lg py-2 px-4 mt-5 float-right '>Add</button>
+        <button className='bg-blue-400 text-blue-50 rounded-lg py-2 px-4 mt-5 float-right'>Info</button> */}
         
       </div>  
         
