@@ -412,7 +412,7 @@ router.route('/regist')
                 var dbo = db.db("registration");
                 dbo.collection("subjects").find({}).toArray((err, subjects) => {
                     if (err) throw err;
-                    res.send(subjects);
+                    res.json(subjects);
                     db.close();
                 })
             }
@@ -428,9 +428,21 @@ router.route('/regist/:id')
                 (err, db) => {
                     if (err) throw err;
                     var dbo = db.db("registration");
-                    //console.log(subj);
-                    dbo.collection("subjects").insertOne(subj)
-                    res.send(subj)
+                    dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
+                        if (err) throw err;
+                        //console.log(subject);
+                        if (subject == null) {
+                            dbo.collection("subjects").insertOne(subj)
+                            //console.log(subj);
+                            res.json(subj)
+                        }
+                        else {
+                            res.send("duplicate")
+                        }
+                    });
+
+
+
                 })
         }
     })
@@ -445,8 +457,17 @@ router.route('/regist/:id')
                     var dbo = db.db("registration");
                     dbo.collection("subjects").findOne({ "subjectID": subject_id }, (err, subject) => {
                         if (err) throw err;
-                        dbo.collection('subjects').deleteOne(subject);
-                        res.send("Delete this subject");
+                        if (err) throw err;
+                        //console.log(subject);
+                        if (subject == null) {
+                            res.send("It is deleted")
+                        }
+                        else {
+
+                            dbo.collection('subjects').deleteOne(subject);
+                            res.send("Delete this subject");
+                        }
+
                     });
                 }
             );
